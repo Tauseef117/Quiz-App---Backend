@@ -17,7 +17,7 @@ async function sendMail(email){
         html: `
         <p>Dear Candidate,</p>
         <p>You have successfully registered to give the test on Quiz Bee platform.</p>
-        <p>Please click on the link <a href="http://127.0.0.1:5500/views/LoginPage.html">here</a>, to start the test.</p>
+        <p>Please click on the link <a href="http://127.0.0.1:5500/views/LoginPage.html">here</a>, to start your test.</p>
         <p>Thank you & All the Best!</p>
         `
     };

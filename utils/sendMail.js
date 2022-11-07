@@ -25,8 +25,9 @@ async function sendMail(email) {
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             throw error;
+            ss
         } else {
-            console.log('Email sent to candidate: ' + info.response);
+            console.log('Email sent to candidate Successfully: ' + info.response);
         }
     });
 }

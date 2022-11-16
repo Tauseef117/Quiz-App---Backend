@@ -1,7 +1,7 @@
 const question = require('../schema/questionSchema')
 
-const deleteQuestion = async(questionToDelete)=>{
-    let data = await question.deleteOne(questionToDelete);
+const deleteQuestion = async(questionID)=>{
+    let data = await question.deleteOne(questionID);
 
     if(data.deletedCount === 1){
         return data;

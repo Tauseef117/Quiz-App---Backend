@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors=require("cors");
-
+const mongoose = require('mongoose');
 
 // Importing local modules:
 require('./model/config/dbConnect');
@@ -107,11 +107,10 @@ app.get("/findQuestions/:technology", async (req, resp) => {
 
 
 // Used in Admin Question Viewing Page for admin to delete questions
-app.delete("/deleteQuestion/:question", async (req, resp) => {
+app.delete("/deleteQuestion/:questionID", async (req, resp) => {
     try{
-        req.params.question += "?"
         console.log(req.params)
-        const result = await deleteQuestion(req.params);
+        const result = await deleteQuestion({"_id": mongoose.Types.ObjectId(req.params.questionID)});
         resp.send({success: true, document : result});
         console.log("Questions successfully deleted from DataBase.")
     }
@@ -152,23 +151,6 @@ app.get("/findReport/:email&:technology", async (req, resp) => {
         resp.send({success: false, errorMsg: e});
         console.log(e)
     }
-    
-});
-
-
-// Used in Admin Report First Page
-app.get("/findAllTestees/", async (req, resp) => {
-    try{
-        const result = await findAllTestees();
-        resp.send({success: true, document : result});
-        console.log("Testees details found in database.")
-    }
-    catch(e){
-        resp.status(400);
-        resp.send({success: false, errorMsg: e})
-        console.log(e)
-    }
-
     
 });
 

@@ -7,12 +7,8 @@ const insertCandidate = async(details)=>{
         return result;
     }
     catch (e){
-        console.log(e);
-        if(e.name === "ValidationError"){
-            throw e.message;
-        }
-        else if (e.name === "MongoServerError"){
-            throw "Candidate has already registered using this creds. Please enter new Email ID and Mobile Number.";
+        if (e.name === "MongoServerError"){
+            throw Error("Candidate has already registered using this creds. Please enter new Email ID and Mobile Number.");
         }
         else{
             throw e;

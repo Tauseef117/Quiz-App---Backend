@@ -7,12 +7,8 @@ const insertReport = async(details)=>{
         return result;
     }
     catch (e){
-        console.log(e);
-        if(e.name === "ValidationError"){
-            throw e.message;
-        }
-        else if (e.name === "MongoServerError"){
-            throw "Candidate has already given the test on this technology. One can take test on same technology only once.";
+        if (e.name === "MongoServerError"){
+            throw Error("Candidate has already given the test on this technology. One can take test on same technology only once.");
         }
         else{
             throw e;

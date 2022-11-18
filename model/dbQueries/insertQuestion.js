@@ -7,12 +7,8 @@ const insertQuestion = async(details)=>{
         return result;
     }
     catch (e){
-        console.log(e);
-        if(e.name === "ValidationError"){
-            throw e.message;
-        }
-        else if (e.name === "MongoServerError"){
-            throw "This Question has been already entered before.";
+        if (e.name === "MongoServerError"){
+            throw Error("This Question has been already entered before.");
         }
         else{
             throw e;

@@ -7,7 +7,7 @@ const deleteQuestion = async(questionID)=>{
         return data;
     }
     else{
-        throw "The Question doesn't exist in DataBase. Please enter valid question to delete.";
+        throw Error("The Question doesn't exist in DataBase. Please enter valid question to delete.");
     }   
 }
 

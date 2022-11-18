@@ -46,8 +46,8 @@ app.post("/insertCandidate", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
     
 });
@@ -63,8 +63,8 @@ app.get("/findCandidate/:email", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
     
 });
@@ -81,8 +81,8 @@ app.post("/insertQuestion", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
     
 });
@@ -99,8 +99,8 @@ app.get("/findQuestions/:technology", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
     
 });
@@ -116,8 +116,8 @@ app.delete("/deleteQuestion/:questionID", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
 })
 
@@ -132,8 +132,8 @@ app.post("/insertReport", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
     
 });
@@ -148,8 +148,8 @@ app.get("/findReport/:email&:technology", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e});
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
     }
     
 });
@@ -164,8 +164,8 @@ app.get("/findAllTestees/", async (req, resp) => {
     }
     catch(e){
         resp.status(400);
-        resp.send({success: false, errorMsg: e})
-        console.log(e)
+        resp.send({success: false, errorMsg: e.message})
+        console.log(e.message)
     }
 
     
@@ -182,7 +182,7 @@ app.post("/sendMail", async (req, resp) => {
         console.log(msg)
     }
     catch(e){
-        // console.log(e)
+        console.log(e.message)
         const msg = "Unable to send Test Link Email to the candidate.";
         resp.status(400);
         resp.send({success: false, errorMsg: msg});

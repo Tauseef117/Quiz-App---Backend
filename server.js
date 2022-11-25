@@ -3,6 +3,10 @@ const app = express();
 const cors=require("cors");
 const mongoose = require('mongoose');
 
+require('dotenv').config()
+const port = process.env.PORT || 5555;
+
+
 // Importing local modules:
 require('./src/services/dbConnect');
 
@@ -193,6 +197,6 @@ app.post("/sendMail", async (req, resp) => {
 
 
 // Start the server at port 5555
-app.listen(5555, () => {
-    console.log('Listening on port ' + 5555);
+app.listen(port, () => {
+    console.log('Listening on port ' + port);
 });

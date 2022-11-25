@@ -3,22 +3,26 @@ const app = express();
 const cors=require("cors");
 const mongoose = require('mongoose');
 
+require('dotenv').config()
+const port = process.env.PORT || 5555;
+
+
 // Importing local modules:
-require('./model/config/dbConnect');
+require('./src/services/dbConnect');
 
-const insertCandidate = require('./model/dbQueries/insertCandidate')
-const findCandidate = require('./model/dbQueries/findCandidate')
+const insertCandidate = require('./src/models/dbQueries/insertCandidate')
+const findCandidate = require('./src/models/dbQueries/findCandidate')
 
-const insertQuestion = require('./model/dbQueries/insertQuestion')
-const findQuestions = require('./model/dbQueries/findQuestions')
-const deleteQuestion = require('./model/dbQueries/deleteQuestion')
+const insertQuestion = require('./src/models/dbQueries/insertQuestion')
+const findQuestions = require('./src/models/dbQueries/findQuestions')
+const deleteQuestion = require('./src/models/dbQueries/deleteQuestion')
 
-const insertReport = require('./model/dbQueries/insertReport')
-const findReport = require('./model/dbQueries/findReport')
+const insertReport = require('./src/models/dbQueries/insertReport')
+const findReport = require('./src/models/dbQueries/findReport')
 
-const findAllTestees = require('./model/dbQueries/findAllTestees')
+const findAllTestees = require('./src/models/dbQueries/findAllTestees')
 
-const sendMail = require('./utils/sendMail')
+const sendMail = require('./src/services/sendMail')
 
 
 // Middleware CORS Config:
@@ -193,6 +197,6 @@ app.post("/sendMail", async (req, resp) => {
 
 
 // Start the server at port 5555
-app.listen(5555, () => {
-    console.log('Listening on port ' + 5555);
+app.listen(port, () => {
+    console.log('Listening on port ' + port);
 });

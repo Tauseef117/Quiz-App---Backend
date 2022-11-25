@@ -5,13 +5,13 @@ async function sendMail(email) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'quizapp5555@gmail.com',
-            pass: 'jyatwrjjurihibnh'
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS
         }
     });
 
     const mailOptions = {
-        from: 'quizapp5555@gmail.com',
+        from: process.env.MAIL_USER,
         to: email,
         subject: 'QUIZ BEE - Test Link',
         html: `
@@ -25,7 +25,6 @@ async function sendMail(email) {
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             throw error;
-            ss
         } else {
             console.log('Email sent to candidate Successfully: ' + info.response);
         }

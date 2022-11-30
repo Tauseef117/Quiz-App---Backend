@@ -8,7 +8,7 @@ const insertCandidate = async(details)=>{
     }
     catch (e){
         if (e.name === "MongoServerError"){
-            throw Error("Candidate has already registered using this creds. Please enter new Email ID and Mobile Number.");
+            throw Error("Candidate using this creds has already registered.");
         }
         else{
             throw e;

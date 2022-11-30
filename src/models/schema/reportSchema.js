@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
-    email  : {type: String, required : true },
-    technology  : {type: String, required : true },
+    email  : {type: String, unique: true, required : true },
     totalScore  : {type: Number, required : true },
 
     question1 : {type: String,required : true },
@@ -80,8 +79,5 @@ const reportSchema = new mongoose.Schema({
     level15 : {type: String, required : true },
     correctAns15 : {type: String, required : true },
 })
-
-// Making Compound Unique Index of Email+Technology
-reportSchema.index({'email': 1, 'technology': 1}, {unique: true});
 
 module.exports = mongoose.model('reports',reportSchema);

@@ -3,15 +3,12 @@ const app = express();
 const mongoose = require('mongoose');
 
 const cors=require("cors");
-const generator = require('generate-password');
 
 require('dotenv').config()
 const port = process.env.PORT || 5555;
 
-
 // Importing local modules:
 require('./src/services/dbConnect');
-const cryptr = require('./src/services/passwordCryptor');
 
 const insertCandidate = require('./src/models/dbQueries/insertCandidate')
 const findCandidate = require('./src/models/dbQueries/findCandidate')
@@ -24,13 +21,15 @@ const deleteQuestion = require('./src/models/dbQueries/deleteQuestion')
 
 const insertReport = require('./src/models/dbQueries/insertReport')
 const findReport = require('./src/models/dbQueries/findReport')
-
 const findAllTestees = require('./src/models/dbQueries/findAllTestees')
 
 const sendMail = require('./src/services/sendMail')
 
 const insertPattern= require('./src/models/dbQueries/insertPattern')
 const findPattern= require('./src/models/dbQueries/findPattern')
+
+const { generatePassword, encryptPassword, decryptPassword } = require('./src/services/passwordGenCryptor');
+
 
 // Middleware CORS Config:
 const corsOptions ={
@@ -47,17 +46,12 @@ app.use(express.json());
 
 // ROUTING: Endpoint is http://localhost:5555
 
-// Used in registration Page
+
+// Used By Admin to insert candidate details. Password, status, patternSet will be automatically set
 app.post("/insertCandidate", async (req, resp) => {
     try{
-        const randomPass = generator.generate({
-            length: 10,
-            numbers: true
-        })
-        console.log(randomPass)
-        const decryptedPass = cryptr.encrypt(randomPass);
-        req.body.password = decryptedPass;
-
+        const randomPass = generatePassword();
+        req.body.password = encryptPassword(randomPass);
         console.log(req.body)
         const result = await insertCandidate(req.body);
         resp.send({success: true, document : result});
@@ -71,7 +65,7 @@ app.post("/insertCandidate", async (req, resp) => {
 });
 
 
-// Used in Login Page
+// Not used in UI for now
 app.get("/findCandidate/:email", async (req, resp) => {
     try{
         console.log(req.params)
@@ -87,7 +81,7 @@ app.get("/findCandidate/:email", async (req, resp) => {
 });
 
 
-// Used in Login Page
+// Used in candidate test status admin page, Admin set pattern page
 app.get("/findAllCandidates", async (req, resp) => {
     try{
         const result = await findAllCandidates();
@@ -102,7 +96,7 @@ app.get("/findAllCandidates", async (req, resp) => {
 });
 
 
-// Used in Login Page
+// Used in admin pattern set page, candidate assessment page after he submits test
 app.patch("/updateCandidate/:email", async (req, resp) => {
     try{
         console.log(req.params)
@@ -182,7 +176,7 @@ app.post("/insertReport", async (req, resp) => {
 });
 
 
-// Used in Admin Report Second Page
+// Used in Admin check Detailed Report Page
 app.get("/findReport/:email", async (req, resp) => {
     try{
         console.log(req.params)
@@ -232,7 +226,7 @@ app.post("/sendMail", async (req, resp) => {
 });
 
 
-// Used To Send the Test Link via E-Mail 
+// Used in candidate quiz pattern set page by admin
 app.post("/insertPattern", async (req, resp) => {
     try{
         console.log(req.body)
@@ -248,7 +242,7 @@ app.post("/insertPattern", async (req, resp) => {
 });
 
 
-// Used in Login Page
+// Used in candidate page to get the pattern for the quiz
 app.get("/findPattern/:email", async (req, resp) => {
     try{
         console.log(req.params)
@@ -269,7 +263,8 @@ app.post("/authenticateCandidate", async (req, resp) => {
     try{
         console.log(req.body)
         const result = await findCandidate({email : req.body.email});
-        if(!(req.body.password === cryptr.decrypt(result[0].password))){
+        const decryptedPassword = decryptPassword(result[0].password);
+        if(!(req.body.password === decryptedPassword)){
             throw Error("Password Doesn't Match")
         }
         resp.send({success: true, document : result});

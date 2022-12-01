@@ -1,28 +1,34 @@
 const express = require('express');
 const app = express();
-const cors=require("cors");
 const mongoose = require('mongoose');
+
+const cors=require("cors");
 
 require('dotenv').config()
 const port = process.env.PORT || 5555;
-
 
 // Importing local modules:
 require('./src/services/dbConnect');
 
 const insertCandidate = require('./src/models/dbQueries/insertCandidate')
 const findCandidate = require('./src/models/dbQueries/findCandidate')
+const findAllCandidates = require('./src/models/dbQueries/findAllCandidates')
+const updateCandidate = require('./src/models/dbQueries/updateCandidate')
 
 const insertQuestion = require('./src/models/dbQueries/insertQuestion')
-const findQuestions = require('./src/models/dbQueries/findQuestions')
+const findAllQuestions = require('./src/models/dbQueries/findAllQuestions')
 const deleteQuestion = require('./src/models/dbQueries/deleteQuestion')
 
 const insertReport = require('./src/models/dbQueries/insertReport')
 const findReport = require('./src/models/dbQueries/findReport')
-
 const findAllTestees = require('./src/models/dbQueries/findAllTestees')
 
 const sendMail = require('./src/services/sendMail')
+
+const insertPattern= require('./src/models/dbQueries/insertPattern')
+const findPattern= require('./src/models/dbQueries/findPattern')
+
+const { generatePassword, encryptPassword, decryptPassword } = require('./src/services/passwordGenCryptor');
 
 
 // Middleware CORS Config:
@@ -40,39 +46,71 @@ app.use(express.json());
 
 // ROUTING: Endpoint is http://localhost:5555
 
-// Used in registration Page
+
+// Used By Admin to insert candidate details. Password, status, patternSet will be automatically set
 app.post("/insertCandidate", async (req, resp) => {
     try{
+        const randomPass = generatePassword();
+        req.body.password = encryptPassword(randomPass);
         console.log(req.body)
         const result = await insertCandidate(req.body);
         resp.send({success: true, document : result});
-        console.log("Candidate successfully added to DataBase.")
+        console.log("Candidate successfully Registered and added to DataBase.")
     }
     catch(e){
         resp.status(400);
         resp.send({success: false, errorMsg: e.message});
         console.log(e.message)
     }
-    
 });
 
 
-// Used in Login Page
+// Not used in UI for now
 app.get("/findCandidate/:email", async (req, resp) => {
     try{
         console.log(req.params)
         const result = await findCandidate(req.params);
         resp.send({success: true, document : result});
-        console.log("Candidate has registered and is authorized to go to assessment page.")
+        console.log("Candidate details found in DataBase.")
     }
     catch(e){
         resp.status(400);
         resp.send({success: false, errorMsg: e.message});
         console.log(e.message)
-    }
-    
+    }  
 });
 
+
+// Used in candidate test status admin page, Admin set pattern page
+app.get("/findAllCandidates", async (req, resp) => {
+    try{
+        const result = await findAllCandidates();
+        resp.send({success: true, document : result});
+        console.log("Showing all the Candidates details from the DataBase.")
+    }
+    catch(e){
+        resp.status(400);
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
+    }  
+});
+
+
+// Used in admin pattern set page, candidate assessment page after he submits test
+app.patch("/updateCandidate/:email", async (req, resp) => {
+    try{
+        console.log(req.params)
+        console.log(req.body)
+        const result = await updateCandidate(req.params,req.body);
+        resp.send({success: true, document : result});
+        console.log("Candidate details successfully updated in DataBase.")
+    }
+    catch(e){
+        resp.status(400);
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
+    }  
+});
 
 
 // Used in Admin Question Entering Page
@@ -87,26 +125,22 @@ app.post("/insertQuestion", async (req, resp) => {
         resp.status(400);
         resp.send({success: false, errorMsg: e.message});
         console.log(e.message)
-    }
-    
+    }  
 });
 
 
-
 // Used in Candidate Assessment Page and in Admin Question Viewing Page
-app.get("/findQuestions/:technology", async (req, resp) => {
+app.get("/findAllQuestions", async (req, resp) => {
     try{
-        console.log(req.params)
-        const result = await findQuestions(req.params);
+        const result = await findAllQuestions();
         resp.send({success: true, document : result});
-        console.log("Questions found on this technology in Database.")
+        console.log("Showing all the Questions details from the DataBase.")
     }
     catch(e){
         resp.status(400);
         resp.send({success: false, errorMsg: e.message});
         console.log(e.message)
     }
-    
 });
 
 
@@ -132,35 +166,34 @@ app.post("/insertReport", async (req, resp) => {
         console.log(req.body)
         const result = await insertReport(req.body);
         resp.send({success: true, document : result});
-        console.log("Report successfully added to DataBase.")
+        console.log("Report of candidate successfully added to DataBase.")
     }
     catch(e){
         resp.status(400);
         resp.send({success: false, errorMsg: e.message});
         console.log(e.message)
     }
-    
 });
 
-// Used in Admin Report Second Page
-app.get("/findReport/:email&:technology", async (req, resp) => {
+
+// Used in Admin check Detailed Report Page
+app.get("/findReport/:email", async (req, resp) => {
     try{
         console.log(req.params)
         const result = await findReport(req.params);
         resp.send({success: true, document : result});
-        console.log("Candidate Test report of the technology found in Database.")
+        console.log("Candidate Test report found in Database.")
     }
     catch(e){
         resp.status(400);
         resp.send({success: false, errorMsg: e.message});
         console.log(e.message)
     }
-    
 });
 
 
 // Used in Admin Report First Page
-app.get("/findAllTestees/", async (req, resp) => {
+app.get("/findAllTestees", async (req, resp) => {
     try{
         const result = await findAllTestees();
         resp.send({success: true, document : result});
@@ -171,8 +204,6 @@ app.get("/findAllTestees/", async (req, resp) => {
         resp.send({success: false, errorMsg: e.message})
         console.log(e.message)
     }
-
-    
 });
 
 
@@ -181,7 +212,7 @@ app.post("/sendMail", async (req, resp) => {
     try{
         console.log(req.body)
         await sendMail(req.body.email)
-        const msg = "Successfully sent Test Link Email to the candidate.";
+        const msg = "Successfully sent Email with Test link and Password to the candidate.";
         resp.send({success: true, message : msg});
         console.log(msg)
     }
@@ -192,7 +223,58 @@ app.post("/sendMail", async (req, resp) => {
         resp.send({success: false, errorMsg: msg});
         console.log(msg)
     }
-    
+});
+
+
+// Used in candidate quiz pattern set page by admin
+app.post("/insertPattern", async (req, resp) => {
+    try{
+        console.log(req.body)
+        const result = await insertPattern(req.body);
+        resp.send({success: true, document : result});
+        console.log("Pattern successfully set and added to DataBase.")
+    }
+    catch(e){
+        resp.status(400);
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
+    }   
+});
+
+
+// Used in candidate page to get the pattern for the quiz
+app.get("/findPattern/:email", async (req, resp) => {
+    try{
+        console.log(req.params)
+        const result = await findPattern(req.params);
+        resp.send({success: true, document : result});
+        console.log("Pattern found in database.")
+    }
+    catch(e){
+        resp.status(400);
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
+    }
+});
+
+
+// Used in Login Page
+app.post("/authenticateCandidate", async (req, resp) => {
+    try{
+        console.log(req.body)
+        const result = await findCandidate({email : req.body.email});
+        const decryptedPassword = decryptPassword(result[0].password);
+        if(!(req.body.password === decryptedPassword)){
+            throw Error("Password Doesn't Match")
+        }
+        resp.send({success: true, document : result});
+        console.log("Candidate is successfully authenticated and can go to next page.")
+    }
+    catch(e){
+        resp.status(400);
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
+    }  
 });
 
 

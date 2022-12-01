@@ -8,7 +8,7 @@ const insertReport = async(details)=>{
     }
     catch (e){
         if (e.name === "MongoServerError"){
-            throw Error("Candidate has already given the test on this technology. One can take test on same technology only once.");
+            throw Error("Candidate has already given the test.");
         }
         else{
             throw e;

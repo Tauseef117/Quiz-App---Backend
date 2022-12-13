@@ -16,6 +16,7 @@ const findAllCandidates = require('./src/models/dbQueries/findAllCandidates')
 const updateCandidate = require('./src/models/dbQueries/updateCandidate')
 
 const insertQuestion = require('./src/models/dbQueries/insertQuestion')
+const findQuestions = require('./src/models/dbQueries/findQuestions')
 const findAllQuestions = require('./src/models/dbQueries/findAllQuestions')
 const deleteQuestion = require('./src/models/dbQueries/deleteQuestion')
 
@@ -144,6 +145,23 @@ app.get("/findAllQuestions", async (req, resp) => {
 });
 
 
+// Used in Admin Question Viewing Page
+app.get("/findQuestions/:technology", async (req, resp) => {
+    try{
+        console.log(req.params)
+        const result = await findQuestions(req.params);
+        resp.send({success: true, document : result});
+        console.log("Questions found on this technology in Database.")
+    }
+    catch(e){
+        resp.status(400);
+        resp.send({success: false, errorMsg: e.message});
+        console.log(e.message)
+    }
+    
+});
+
+
 // Used in Admin Question Viewing Page for admin to delete questions
 app.delete("/deleteQuestion/:questionID", async (req, resp) => {
     try{
@@ -259,6 +277,20 @@ app.get("/findPattern/:email", async (req, resp) => {
 
 
 // Used in Login Page
+app.post("/isAdmin", async (req, resp) => {
+    console.log(req.body)
+    if(req.body.email === process.env.ADMIN_ID && req.body.password === process.env.ADMIN_PASS){
+        resp.send({success: true});
+        console.log("Admin Credentials Matched.")
+    }
+    else{
+        resp.send({success: false, errorMsg: "Wrong Admin Credentials"});
+        console.log("Wrong Admin Credentials")
+    }
+});
+
+
+// Used in Login Page
 app.post("/authenticateCandidate", async (req, resp) => {
     try{
         console.log(req.body)
@@ -276,6 +308,7 @@ app.post("/authenticateCandidate", async (req, resp) => {
         console.log(e.message)
     }  
 });
+
 
 
 // Start the server at port 5555

@@ -1,0 +1,257 @@
+{
+	"info": {
+		"_postman_id": "28a67576-10ba-4cd3-921c-616c21dcdb74",
+		"name": "QUIZ-APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "17746568",
+		"_collection_link": "https://interstellar-station-658339.postman.co/workspace/Team-Workspace~c71a2708-237f-4475-8443-b9c9fb045f60/collection/17746568-28a67576-10ba-4cd3-921c-616c21dcdb74?action=share&creator=17746568&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Candidate",
+			"item": [
+				{
+					"name": "insertCandidate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"name\": \"Tauseef\",\r\n    \"email\": \"tauseef.ahmed@mresult.com\", \r\n    \"phone\":\"9999799885\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5555/insertCandidate",
+						"description": "Post request to enter candidate details in database"
+					},
+					"response": []
+				},
+				{
+					"name": "findCandidate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findCandidate/tauseef.ahmed@mresult.com",
+						"description": "GET the candidate details using their email ID."
+					},
+					"response": []
+				},
+				{
+					"name": "findAllCandidates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findAllCandidates"
+					},
+					"response": []
+				},
+				{
+					"name": "authenticateCandidate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"tauseef.ahmed@mresult.com\",\r\n    \"password\": \"ODfoMdqU1w\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5555/authenticateCandidate"
+					},
+					"response": []
+				},
+				{
+					"name": "updateCandidate",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n    \"patternSet\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5555/updateCandidate/tauseef.ahmed@mresult.com"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Question",
+			"item": [
+				{
+					"name": "insertQuestion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"technology\": \"Android\",\r\n    \"difficulty\":\"Basic\",\r\n    \"question\": \"What is Android?\",\r\n    \"option1\": \"Object Oriented\",\r\n    \"option2\": \"Object Based\",\r\n    \"option3\": \"Procedural\",\r\n    \"option4\": \"none of the above\",\r\n    \"answer\": \"option1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5555/insertQuestion",
+						"description": "Admin enters the question, each question has to be unique."
+					},
+					"response": []
+				},
+				{
+					"name": "findAllQuestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findAllQuestions",
+						"description": "Find the questions entered by Admin by Technology."
+					},
+					"response": []
+				},
+				{
+					"name": "deleteQuestion",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:5555/deleteQuestion/6374f338a846e4101d21a214",
+						"description": "To delete the question from DataBase using the Question."
+					},
+					"response": []
+				},
+				{
+					"name": "findQuestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findQuestions/JavaScript",
+						"description": "Find the questions entered by Admin by Technology."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "insertReport",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tauseef.ahmed@mresult.com\",\r\n    \"totalScore\": 10,\r\n    \"question1\": \"What is A?\",\r\n    \"selectedAns1\": \"1 HJJHHHHHHHHAA\",\r\n    \"level1\": \"Basic\",\r\n    \"correctAns1\": \"1 HJJHHHHHHHH\",\r\n    \"question2\": \"What is B?\",\r\n    \"selectedAns2\": \"2 KKHJJHHHHHHHH\",\r\n    \"level2\": \"Basic\",\r\n    \"correctAns2\": \"1 HJJHHHHHHHH\",\r\n    \"question3\": \"What is C?\",\r\n    \"selectedAns3\": \"331 HJJHHHHHHHH\",\r\n    \"level3\": \"Basic\",\r\n    \"correctAns3\": \"1 HJJHHHHHHHH\",\r\n    \"question4\": \"What is D?\",\r\n    \"selectedAns4\": \"331 HJJHHHHHHHH\",\r\n    \"level4\": \"Basic\",\r\n    \"correctAns4\": \"1 HJJHHHHHHHH\",\r\n    \"question5\": \"What is E?\",\r\n    \"selectedAns5\": \"331 HJJHHHHHHHH\",\r\n    \"level5\": \"Basic\",\r\n    \"correctAns5\": \"1 HJJHHHHHHHH\",\r\n    \"question6\": \"What is 6?\",\r\n    \"selectedAns6\": \"331 HJJHHHHHHHH\",\r\n    \"level6\": \"Basic\",\r\n    \"correctAns6\": \"1 HJJHHHHHHHH\",\r\n    \"question7\": \"What is 7?\",\r\n    \"selectedAns7\": \"331 HJJHHHHHHHH\",\r\n    \"level7\": \"Basic\",\r\n    \"correctAns7\": \"1 HJJHHHHHHHH\",\r\n    \"question8\": \"What is 8?\",\r\n    \"selectedAns8\": \"331 HJJHHHHHHHH\",\r\n    \"level8\": \"Basic\",\r\n    \"correctAns8\": \"1 HJJHHHHHHHH\",\r\n    \"question9\": \"What is 9?\",\r\n    \"selectedAns9\": \"331 HJJHHHHHHHH\",\r\n    \"level9\": \"Basic\",\r\n    \"correctAns9\": \"1 HJJHHHHHHHH\",\r\n    \"question10\": \"What is 10?\",\r\n    \"selectedAns10\": \"331 HJJHHHHHHHH\",\r\n    \"level10\": \"Basic\",\r\n    \"correctAns10\": \"1 HJJHHHHHHHH\",\r\n    \"question11\": \"What is 11?\",\r\n    \"selectedAns11\": \"331 HJJHHHHHHHH\",\r\n    \"level11\": \"Basic\",\r\n    \"correctAns11\": \"1 HJJHHHHHHHH\",\r\n    \"question12\": \"What is 12?\",\r\n    \"selectedAns12\": \"331 HJJHHHHHHHH\",\r\n    \"level12\": \"Basic\",\r\n    \"correctAns12\": \"1 HJJHHHHHHHH\",\r\n    \"question13\": \"What is 13?\",\r\n    \"selectedAns13\": \"331 HJJHHHHHHHH\",\r\n    \"level13\": \"Basic\",\r\n    \"correctAns13\": \"1 HJJHHHHHHHH\",\r\n    \"question14\": \"What is 14?\",\r\n    \"selectedAns14\": \"331 HJJHHHHHHHH\",\r\n    \"level14\": \"Basic\",\r\n    \"correctAns14\": \"1 HJJHHHHHHHH\",\r\n    \"question15\": \"What is 15?\",\r\n    \"selectedAns15\": \"331 HJJHHHHHHHH\",\r\n    \"level15\": \"Basic\",\r\n    \"correctAns15\": \"1 HJJHHHHHHHH\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5555/insertReport",
+						"description": "Inserting the test response of candidate. Email and Technology is compositely Unique."
+					},
+					"response": []
+				},
+				{
+					"name": "findReport",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findReport/tauseef.ahmed@mresult.com",
+						"description": "Find the report of the candidate using their email ID and the technology."
+					},
+					"response": []
+				},
+				{
+					"name": "findAllTestees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findAllTestees",
+						"description": "Find all the names and details of testees"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pattern",
+			"item": [
+				{
+					"name": "insertPattern",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"tauseef.ahmed@mresult.com\",\r\n  \"javaScript\": {\r\n    \"total\": 6,\r\n    \"basic\": 2,\r\n    \"intermediate\": 3,\r\n    \"advanced\": 1\r\n  },\r\n  \"java\": {\r\n    \"total\": 4,\r\n    \"basic\": 2,\r\n    \"intermediate\": 0,\r\n    \"advanced\": 2\r\n  },\r\n  \"android\": {\r\n    \"total\": 5,\r\n    \"basic\": 2,\r\n    \"intermediate\": 3,\r\n    \"advanced\": 0\r\n  },\r\n  \"python\": {\r\n    \"total\": 0,\r\n    \"basic\": 0,\r\n    \"intermediate\": 0,\r\n    \"advanced\": 0\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5555/insertPattern"
+					},
+					"response": []
+				},
+				{
+					"name": "findPattern",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5555/findPattern/tauseef.ahmed@mresult.com"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sendMail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"tauseef.ahmed@mresult.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5555/sendMail",
+				"description": "Send Test Link to candidates.\r\n"
+			},
+			"response": []
+		},
+		{
+			"name": "isAdmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"email\": \"admin@quiz.com\", \r\n    \"password\":\"quizADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5555/isAdmin"
+			},
+			"response": []
+		}
+	]
+}
